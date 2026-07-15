@@ -1,26 +1,22 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api.dart';
+import 'package:news_app/data/api/api.dart';
+import 'package:news_app/data/models/news_model.dart';
 import 'package:news_app/widgets/image_item_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   static const routeName = 'HomeScreen';
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic> data = {
-        "status": "ok",
-    "totalResults": 10153,
-    "articles": []
-  };
+          "status": "ok",
+      "totalResults": 10153,
+      "articles": []
+    };
   @override
-  void initState() {
-    super.initState();
-    getNews();
-  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff202020),
@@ -34,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
            ),
         centerTitle: true,
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<NewsModel>(
         future: Api.getNews(),
         builder: (context, snapshot) {
           log('future builder called');
@@ -52,16 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
           }
           if (snapshot.hasData) {
             log('future builder has data');
-            List<dynamic> data = snapshot.data?['articles'] ?? [];
+            List<Article> articles = snapshot.data?.articles ?? [];
             return ListView.builder(
               itemBuilder: (context, index) {
                 return ImageItemWidget(
-                  image: data[index]['urlToImage'] ?? dummyImage,
-                  title: data[index]['title'] ?? "Empty String $index",
+                  image: articles[index].urlToImage ?? dummyImage,
+                  title: articles[index].title ?? "Empty String $index",
                   onTap: () {},
                 );
               },
-              itemCount: data.length,
+              itemCount: articles.length,
             );
           } else {
             return Center(
@@ -75,12 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  void getNews() async {
-    var data = await Api.getNews();
-    setState(() {
-      this.data = data;
-    });
-         }
   }
 
 
