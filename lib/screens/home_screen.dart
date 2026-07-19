@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api.dart';
+import 'package:news_app/data/api/api.dart';
 import 'package:news_app/widgets/image_item_widget.dart';
 
 class HomeScreen extends StatefulWidget {
