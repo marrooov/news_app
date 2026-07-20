@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ImageItemWidget extends StatelessWidget {
@@ -24,21 +25,12 @@ class ImageItemWidget extends StatelessWidget {
             //! image
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                image,
-
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-
-              // Image.network(
-              //   image,
-              //   width: double.infinity,
-              //   height: 200,
-              //   fit: BoxFit.cover,
-              // ),
-            ),
+              child: CachedNetworkImage(
+                imageUrl: image ,
+                placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+                ),
 
             //! title
             Text(
