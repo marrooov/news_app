@@ -7,7 +7,16 @@ import 'package:news_app/features/home/view_model/view_cubit/home_state.dart';
  class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
 
-  void fetchNews() async {
+  Future<void> intent(HomeIntent intent) async {
+   switch (intent) {
+      case FetchHomeIntent():
+        await fetchNews(intent.id);
+      case FetchSourceIntent():
+        await _getSource();
+    }
+  }
+
+  Future<void> fetchNews(String id) async {
     emit(HomeLoading());
     var result = await Api.getNews();
     switch (result) {
@@ -19,4 +28,14 @@ import 'package:news_app/features/home/view_model/view_cubit/home_state.dart';
         break;
     }
   }
+  Future<void> _getSource() async {}
 }
+
+sealed class HomeIntent {}
+
+class FetchHomeIntent extends HomeIntent {
+  String id;
+  FetchHomeIntent(this.id);
+}
+
+class FetchSourceIntent extends HomeIntent {}

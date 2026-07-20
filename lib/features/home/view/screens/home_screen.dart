@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..fetchNews(),
+      create: (context) => HomeCubit()..intent(FetchHomeIntent('1')),
       child: Scaffold(
         backgroundColor: Color(0xff202020),
         appBar: AppBar(
