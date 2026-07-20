@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/core/api/result_api.dart';
-import 'package:news_app/features/home/data/api/api.dart';
 import 'package:news_app/features/home/data/models/news_model.dart';
+import 'package:news_app/features/home/data/repo/repo/home_repo_interface.dart';
 import 'package:news_app/features/home/view_model/view_cubit/home_state.dart';
 
  class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
+  HomeCubit(this._repo) : super(HomeInitial());
+  final HomeRepoInterface _repo;
 
   Future<void> intent(HomeIntent intent) async {
    switch (intent) {
@@ -18,16 +19,21 @@ import 'package:news_app/features/home/view_model/view_cubit/home_state.dart';
 
   Future<void> fetchNews(String id) async {
     emit(HomeLoading());
-    var result = await Api.getNews();
+    var result = await _repo.getNews();
+    // switch (result) {
+    //   case Success<NewsModel>():
+    //     emit(HomeSuccess(result.data?.articles ?? []));
+    //     break;
+    //   case Error<NewsModel>():
+    //     emit(HomeError(result.messageError));
+    //     break;
     switch (result) {
-      case Success<NewsModel>():
-        emit(HomeSuccess(result.data?.articles ?? []));
-        break;
-      case Error<NewsModel>():
-        emit(HomeError(result.messageError));
-        break;
-    }
+      case Success<List<Article>>():
+        emit(HomeSuccess(result.data ?? []));
+      case Error<List<Article>>(:final messageError):
+        emit(HomeError(messageError));
   }
+}
   Future<void> _getSource() async {}
 }
 
