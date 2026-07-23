@@ -1,13 +1,14 @@
 import 'package:news_app/core/api/result_api.dart';
-import 'package:news_app/features/home/data/models/news_model.dart';
-import 'package:news_app/features/home/data/repo/data_source/home_data_source_i9nterface.dart';
+import 'package:news_app/features/home/domain/entities/news_entity.dart';
+import 'package:news_app/features/home/domain/repo/home_data_source_interface.dart';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:news_app/features/home/data/models/news_dto.dart';
 class HomeDataSourceImp implements HomeDataSourceInterface {
   @override
-  Future<ResultApi<List<Article>>> getNews() async {
+  Future<ResultApi<NewsEntity>> getNews() async {
     try {
       Uri url = Uri.https('newsapi.org', '/v2/everything', {
         'q': 'bitcoin',
@@ -16,13 +17,12 @@ class HomeDataSourceImp implements HomeDataSourceInterface {
          var response = await http.get(url);
          String responseBody = response.body;
          var json = jsonDecode(responseBody);
-         var data = NewsModel.fromJson(json);
-         return Success<List<Article>>(data.articles ?? []);
+         var data = NewsDto.fromJson(json);
+         return Success<NewsEntity>(data.toEntity());
     } on SocketException {
-      return Error<List<Article>>('Failed to connect to the internet');}
+      return Error<NewsEntity>('Failed to connect to the internet');}
      catch (e) {
-      return Error<List<Article>>(e.toString()); // do not forget it!!
+      return Error<NewsEntity>(e.toString()); // do not forget it!!
     }
-  }
-
+}
 }
