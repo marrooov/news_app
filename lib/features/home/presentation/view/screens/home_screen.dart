@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/core/di/service_locator.dart';
 import 'package:news_app/features/home/domain/entities/news_entity.dart';
-import 'package:news_app/features/home/domain/use_case/get_news_use_case.dart';
 import 'package:news_app/features/home/presentation/view/widgets/image_item_widget.dart';
 import 'package:news_app/features/home/presentation/view_model/view_cubit/home_cubit.dart';
 import 'package:news_app/features/home/presentation/view_model/view_cubit/home_state.dart';
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(getNewsUseCaseInjectable(),
+      create: (context) => serviceLocator<HomeCubit>(
       )..intent(FetchHomeIntent('1')),
       child: Scaffold(
         backgroundColor: Color(0xff202020),

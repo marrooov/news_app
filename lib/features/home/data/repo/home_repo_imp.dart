@@ -1,9 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:news_app/core/api/result_api.dart';
-import 'package:news_app/features/home/data/repo/home_data_source_imp.dart';
 import 'package:news_app/features/home/domain/entities/news_entity.dart';
 import 'package:news_app/features/home/domain/repo/home_data_source_interface.dart';
 import 'package:news_app/features/home/domain/repo/home_repo_interface.dart';
 
+@Injectable(as: HomeRepoInterface)
 class HomeRepoImp implements HomeRepoInterface{
   final HomeDataSourceInterface _dataSource;
   HomeRepoImp(this._dataSource);
@@ -11,6 +12,3 @@ class HomeRepoImp implements HomeRepoInterface{
   Future<ResultApi<NewsEntity>> getNews() async => await _dataSource.getNews();
 }
 
-
-HomeRepoInterface homeRepoImpInjectable() => 
-  HomeRepoImp(homeDataSourceImpInjectable());

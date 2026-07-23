@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:news_app/core/api/result_api.dart';
 import 'package:news_app/features/home/domain/entities/news_entity.dart';
 import 'package:news_app/features/home/domain/repo/home_data_source_interface.dart';
@@ -6,6 +7,8 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:news_app/features/home/data/models/news_dto.dart';
+
+@Injectable(as: HomeDataSourceInterface)
 class HomeDataSourceImp implements HomeDataSourceInterface {
   @override
   Future<ResultApi<NewsEntity>> getNews() async {
@@ -26,5 +29,3 @@ class HomeDataSourceImp implements HomeDataSourceInterface {
     }
   }
 }
-
-HomeDataSourceInterface homeDataSourceImpInjectable () => HomeDataSourceImp();
