@@ -24,5 +24,7 @@ class HomeDataSourceImp implements HomeDataSourceInterface {
      catch (e) {
       return Error<NewsEntity>(e.toString()); // do not forget it!!
     }
+  }
 }
-}
+
+HomeDataSourceInterface homeDataSourceImpInjectable () => HomeDataSourceImp();

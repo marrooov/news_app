@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/features/home/data/repo/home_data_source_imp.dart';
-import 'package:news_app/features/home/data/repo/home_repo_imp.dart';
 import 'package:news_app/features/home/domain/entities/news_entity.dart';
 import 'package:news_app/features/home/domain/use_case/get_news_use_case.dart';
 import 'package:news_app/features/home/presentation/view/widgets/image_item_widget.dart';
@@ -23,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(GetNewsUseCase(HomeRepoImp(HomeDataSourceImp()),),
+      create: (context) => HomeCubit(getNewsUseCaseInjectable(),
       )..intent(FetchHomeIntent('1')),
       child: Scaffold(
         backgroundColor: Color(0xff202020),
