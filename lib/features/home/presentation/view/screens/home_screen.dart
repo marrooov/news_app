@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/features/home/data/models/news_model.dart';
-import 'package:news_app/features/home/data/repo/data_source/home_data_source_imp.dart';
-import 'package:news_app/features/home/data/repo/repo/home_repo_imp.dart';
-import 'package:news_app/features/home/view/widgets/image_item_widget.dart';
-import 'package:news_app/features/home/view_model/view_cubit/home_cubit.dart';
-import 'package:news_app/features/home/view_model/view_cubit/home_state.dart';
+import 'package:news_app/core/di/service_locator.dart';
+import 'package:news_app/features/home/domain/entities/news_entity.dart';
+import 'package:news_app/features/home/presentation/view/widgets/image_item_widget.dart';
+import 'package:news_app/features/home/presentation/view_model/view_cubit/home_cubit.dart';
+import 'package:news_app/features/home/presentation/view_model/view_cubit/home_state.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,17 +14,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Article> articles = [];
+  List<ArticleEntity> articles = [];
   bool isLoading = true;
   String? messageError;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(
-        HomeRepoImp(
-          HomeDataSourceImp(),
-        ),
+      create: (context) => serviceLocator<HomeCubit>(
       )..intent(FetchHomeIntent('1')),
       child: Scaffold(
         backgroundColor: Color(0xff202020),
@@ -53,8 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     return ImageItemWidget(
-                      image: state.articles[index].urlToImage ?? dummyImage,
-                      title: state.articles[index].title ?? "Empty String ",
+                      image: state.articles[index].urlToImage,
+                      title: state.articles[index].title,
                       onTap: () {},
                     );
                   },
@@ -78,5 +74,5 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-String dummyImage =
+ const dummyImage =
     'https://images.theconversation.com/files/651621/original/file-20250226-32-jxjhmy.jpg?ixlib=rb-4.1.0&rect=0%2C0%2C5991%2C3997&q=20&auto=format&w=320&fit=clip&dpr=2&usm=12&cs=strip';

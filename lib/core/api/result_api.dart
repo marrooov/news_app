@@ -4,7 +4,7 @@ sealed class ResultApi <T> {
 }
 
 class Success<T> extends ResultApi<T> {
-   T? data;
+   T data;
 
   Success(this.data);
 }
